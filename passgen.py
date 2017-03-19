@@ -32,8 +32,9 @@ from random import shuffle, randint
 from docopt import docopt
 from tabulate import tabulate
 
-__version__ = "2.0.0"
+__version__ = "2.1.0"
 args = docopt(__doc__, version=__version__, help=True)
+
 
 # Get the word list from a file
 with open(args['-f'], 'r') as wordfile:
@@ -41,44 +42,44 @@ with open(args['-f'], 'r') as wordfile:
 
 wordMax = int(args['-w'])
 wordMin = int(args['-m'])
+if wordMin > wordMax:
+    print("(ERROR) Minimum wordsize %d must be less than maximum wordsize %d" % (wordMin, wordMax))
+    exit(1)
+
 rows = int(args['-r'])
 cols = int(args['-c'])
 numWords = int(args['-l'])
-tabulate_format = str(args['-t'])
+assert rows > 0
+assert cols > 0
+assert numWords > 0
 
 symbols = '=+-_/*!@#$%^&*'
 print("Symbols being used: %s\n" % symbols)
+
+
+# Generate a list of words to use from the shuffled word file
 acceptedList = []
-
-
-# Generates a list of words to use from the shuffled word file
 shuffle(data)
 for word in data:
     if wordMin <= len(word) <= wordMax:
         acceptedList.append(word)
 
 
-"""
-Here's how the table should look
-    | 1     | 2     | 3     | 4     |
-1   | pass  | words | lmao  | hubs  |
-2   | lyre  | wolf  | fox   | bear  |
-"""
-
 # Build the table as a list of lists
 table = []
 for c in range(1, rows + 1):
-    row = [c]  # Set the first column in a row to the row number
-    for _ in range(cols):  # Generates passwords for the row
+    row = [c]               # Set the first column in a row to the row number
+    for _ in range(cols):   # Generates passwords for the row
         password = ''
         for i in range(numWords):  # Generates a password
-            word = acceptedList[randint(0, len(acceptedList)-1)]
-            password += word + symbols[randint(0, len(symbols)-1)]
+            word = acceptedList[randint(0, len(acceptedList)-1)]    # Random word
+            password += word + symbols[randint(0, len(symbols)-1)]  # Random symbol
         password += str(randint(0, 10))  # Append a single random integer to end of password
         row.append(password)  # Add password to the row
         # TODO: fixed length passwords using padding (for "prettyness")
     table.append(row)  # Add row to the table
 
 # Print the password table (If you need file output, just redirect on the command line)
-headers = list(range(1, cols + 1))
+headers = list(range(1, cols + 1))  # Column headers
+tabulate_format = str(args['-t'])   # Format to use for Tabulate
 print(tabulate(table, headers=headers, tablefmt=tabulate_format))

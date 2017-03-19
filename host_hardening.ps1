@@ -1,4 +1,5 @@
-﻿
+﻿# Author: Christopher Goes
+
 $urls = @("https://ninite.com/.net4.6.2-malwarebytes-notepadplusplus-putty-winscp/", "https://download.microsoft.com/download/8/E/E/8EEFD9FC-46B1-4A8B-9B5D-13B4365F8CA0/EMET%20Setup.msi", "https://download.microsoft.com/download/A/5/0/A50F33AD-842E-43E8-AE99-3AF984A67A52/Security_Compliance_Manager_Setup.exe")
 $filenames = @("ninite1.exe", "EMET Setup.msi", "Security_Compliance_Manager_Setup.exe")
 $msis = @("EMET Setup.msi")
