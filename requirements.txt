@@ -1,2 +1,2 @@
 docopt>=0.6.2
-tabulate
+tabulate>=0.7.7
